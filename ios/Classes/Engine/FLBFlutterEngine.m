@@ -30,6 +30,7 @@
 
 @interface FLBFlutterEngine()
 @property (nonatomic,strong) FlutterEngine *engine;
+@property (nonatomic,strong)  FLBFlutterViewContainer *dummy;
 @end
 
 @implementation FLBFlutterEngine
@@ -52,6 +53,10 @@
         }else{
             [_engine runWithEntrypoint:nil];
         }
+        _dummy = [[FLBFlutterViewContainer alloc] initWithEngine:_engine
+                                                          nibName:nil
+                                                           bundle:nil];
+        _dummy.name = kIgnoreMessageWithName;
     }
     
     return self;
@@ -103,9 +108,9 @@
 
 - (void)detach
 {
-    if(_engine.viewController != nil){
+    if(_engine.viewController != _dummy){
         [(FLBFlutterViewContainer *)_engine.viewController surfaceUpdated:NO];
-        _engine.viewController = nil;
+        _engine.viewController = _dummy;
     }
 }
 
