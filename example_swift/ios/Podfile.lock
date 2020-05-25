@@ -5,18 +5,18 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `.symlinks/flutter/ios`)
-  - flutter_boost (from `/Users/yujie/Desktop/FlutterWork/flutter_boost/ios`)
+  - flutter_boost (from `/Users/chedch/develop/flutter_boost/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: ".symlinks/flutter/ios"
   flutter_boost:
-    :path: "/Users/yujie/Desktop/FlutterWork/flutter_boost/ios"
+    :path: "/Users/chedch/develop/flutter_boost/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_boost: a7cfa776b75329d5e7d101d0cd33e75042bcde69
 
 PODFILE CHECKSUM: 2a757a7bdc03b37a2814666652fdff1cf694243f
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.9.1

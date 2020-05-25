@@ -9,6 +9,7 @@
 #import "PlatformRouterImp.h"
 #import "UIViewControllerDemo.h"
 #import <flutter_boost/FlutterBoost.h>
+#import "Test1ViewController.h"
 
 @interface PlatformRouterImp()
 @end
@@ -36,6 +37,13 @@
 {
     if ([name isEqualToString:@"native"]) {//模拟打开native页面
         [self openNativeVC:name urlParams:params exts:exts];
+        return;
+    } else if ([name isEqualToString:@"test1"]) {
+        BOOL animated = [exts[@"animated"] boolValue];
+           Test1ViewController *vc1 = Test1ViewController.new;
+           [vc1 setName:name params:params];
+           [self.navigationController pushViewController:vc1 animated:animated];
+           if(completion) completion(YES);
         return;
     }
     

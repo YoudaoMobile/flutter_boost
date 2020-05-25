@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -42,22 +40,45 @@
                         <action selector="present:" destination="-1" eventType="touchUpInside" id="2xc-IT-njo"/>
                     </connections>
                 </button>
-                <textField opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="This a native page" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bCg-og-n1K">
-                    <rect key="frame" x="121" y="120" width="133" height="17"/>
-                    <color key="textColor" red="1" green="0.034776387922296426" blue="0.45555885506455018" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                </textField>
+                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yog-II-6wy">
+                    <rect key="frame" x="101" y="100" width="173" height="58.5"/>
+                    <subviews>
+                        <textField opaque="NO" contentMode="scaleToFill" ambiguous="YES" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="This a native page" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bCg-og-n1K">
+                            <rect key="frame" x="20" y="20" width="133" height="18.5"/>
+                            <color key="textColor" red="1" green="0.034776387922296426" blue="0.45555885506455018" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstItem="bCg-og-n1K" firstAttribute="top" secondItem="Yog-II-6wy" secondAttribute="top" constant="20" id="M3M-Si-kYf"/>
+                        <constraint firstItem="bCg-og-n1K" firstAttribute="centerX" secondItem="Yog-II-6wy" secondAttribute="centerX" id="VsT-AZ-7BX"/>
+                        <constraint firstItem="bCg-og-n1K" firstAttribute="width" secondItem="Yog-II-6wy" secondAttribute="height" multiplier="0.2" constant="121.3" id="lls-rI-W0I"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g5e-B5-Ovn">
+                    <rect key="frame" x="117" y="409" width="140" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="140" id="PFR-Sn-43p"/>
+                        <constraint firstAttribute="height" constant="40" id="YAg-VU-OHC"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="oBg-LH-Edx"/>
+                    </constraints>
+                    <state key="normal" title="push test platform"/>
+                    <connections>
+                        <action selector="pushTest1:" destination="-1" eventType="touchUpInside" id="fcP-BY-vrO"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="g5e-B5-Ovn" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="117" id="1bY-l3-Ovl"/>
                 <constraint firstItem="Nzh-7M-COj" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="9DT-7L-3xa"/>
-                <constraint firstItem="bCg-og-n1K" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="9T9-4m-GgT"/>
                 <constraint firstItem="Nzh-7M-COj" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="D6k-vF-b5G"/>
-                <constraint firstItem="bCg-og-n1K" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="120" id="G4r-vQ-M9g"/>
+                <constraint firstAttribute="bottom" secondItem="g5e-B5-Ovn" secondAttribute="bottom" constant="218" id="JZf-r7-Z81"/>
+                <constraint firstAttribute="trailing" secondItem="g5e-B5-Ovn" secondAttribute="trailing" constant="118" id="Tp1-NV-tcE"/>
                 <constraint firstItem="DT7-uk-4YM" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="a5O-rA-Z3g"/>
                 <constraint firstItem="DT7-uk-4YM" firstAttribute="top" secondItem="Nzh-7M-COj" secondAttribute="bottom" constant="7.5" id="rhd-e4-oVP"/>
-                <constraint firstItem="bCg-og-n1K" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="0.2" id="zgc-4g-vU3"/>
             </constraints>
             <point key="canvasLocation" x="-759.20000000000005" y="143.47826086956522"/>
         </view>

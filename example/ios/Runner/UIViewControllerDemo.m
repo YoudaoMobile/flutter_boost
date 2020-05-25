@@ -38,6 +38,16 @@
     }];
 }
 
+- (IBAction)pushTest1:(id)sender {
+    [FlutterBoostPlugin open:@"test1" urlParams:@{kPageCallBackId:@"MycallbackId#2"} exts:@{@"animated":@(YES)} onPageFinished:^(NSDictionary *result) {
+           NSLog(@"call me when page finished, and your result is:%@", result);
+       } completion:^(BOOL f) {
+           NSLog(@"page is presented");
+       }];
+    
+}
+
+
 /*
 #pragma mark - Navigation
 
