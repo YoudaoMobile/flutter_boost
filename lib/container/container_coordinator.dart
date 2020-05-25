@@ -102,7 +102,7 @@ class ContainerCoordinator {
       Map map = event;
       final String type = map['type'];
 
-      Logger.log("onEvent $type");
+      Logger.log('onEvent $type');
 
       switch (type) {
         //Handler back key pressed event.
@@ -225,24 +225,22 @@ class ContainerCoordinator {
     FlutterBoost.containerManager
         ?.showContainer(_createContainerSettings(name, params, pageId));
 
-    //在Android上对无障碍辅助模式的兼容
-    if (Platform.isAndroid) {
-      try {
-        final SemanticsOwner owner =
-            WidgetsBinding.instance.pipelineOwner?.semanticsOwner;
-        final SemanticsNode root = owner?.rootSemanticsNode;
-        root?.detach();
-        root?.attach(owner);
-      } catch (e) {
-        assert(false, e.toString());
-      }
+    //对无障碍辅助模式的兼容
+    try {
+      final SemanticsOwner owner =
+          WidgetsBinding.instance.pipelineOwner?.semanticsOwner;
+      final SemanticsNode root = owner?.rootSemanticsNode;
+      root?.detach();
+      root?.attach(owner);
+    } catch (e) {
+      assert(false, e.toString());
     }
 
     performContainerLifeCycle(_createContainerSettings(name, params, pageId),
         ContainerLifeCycle.Appear);
 
     Logger.log(
-        'native containner did show,\nmanager dump:\n${FlutterBoost.containerManager?.dump()}');
+        'native containner did show-$name,\nmanager dump:\n${FlutterBoost.containerManager?.dump()}');
 
     return true;
   }
@@ -266,18 +264,16 @@ class ContainerCoordinator {
   }
 
   bool _nativeContainerWillDealloc(String name, Map params, String pageId) {
-    try{
-
+    try {
       performContainerLifeCycle(_createContainerSettings(name, params, pageId),
           ContainerLifeCycle.Destroy);
-    } catch (e){
-      Logger.log(
-          'nativeContainerWillDealloc error: ${e}' );
+    } catch (e) {
+      Logger.log('nativeContainerWillDealloc error: ${e}');
     }
     FlutterBoost.containerManager?.remove(pageId);
 
     Logger.log(
-        'native containner dealloc, \n manager dump:\n${FlutterBoost.containerManager?.dump()}');
+        'native containner dealloc for $name, \n manager dump:\n${FlutterBoost.containerManager?.dump()}');
 
     return true;
   }

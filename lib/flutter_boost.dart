@@ -76,16 +76,14 @@ class FlutterBoost {
       PostPushRoute postPush}) {
     if (Platform.isAndroid) {
       onPageStart();
-    }
-    assert(() {
-      () async {
-        if (Platform.isIOS) {
+    } else if (Platform.isIOS) {
+      assert(() {
+        () async {
           onPageStart();
-        }
-      }();
-
-      return true;
-    }());
+        }();
+        return true;
+      }());
+    }
 
     return (BuildContext context, Widget child) {
       assert(child is Navigator, 'child must be Navigator, what is wrong?');
@@ -123,8 +121,8 @@ class FlutterBoost {
   }
 
   Future<Map<dynamic, dynamic>> open(String url,
-      {Map<dynamic, dynamic> urlParams, Map<dynamic, dynamic> exts}) {
-    Map<dynamic, dynamic> properties = new Map<dynamic, dynamic>();
+      {Map<String, dynamic> urlParams, Map<String, dynamic> exts}) {
+    Map<String, dynamic> properties = new Map<String, dynamic>();
     properties["url"] = url;
     properties["urlParams"] = urlParams;
     properties["exts"] = exts;
@@ -132,14 +130,14 @@ class FlutterBoost {
   }
 
   Future<bool> close(String id,
-      {Map<dynamic, dynamic> result, Map<dynamic, dynamic> exts}) {
+      {Map<String, dynamic> result, Map<String, dynamic> exts}) {
     assert(id != null);
 
     BoostContainerSettings settings = containerManager?.onstageSettings;
-    Map<dynamic, dynamic> properties = new Map<dynamic, dynamic>();
+    Map<String, dynamic> properties = new Map<String, dynamic>();
 
     if (exts == null) {
-      exts = Map<dynamic, dynamic>();
+      exts = Map<String, dynamic>();
     }
 
     exts["params"] = settings.params;
@@ -198,6 +196,4 @@ class FlutterBoost {
   ///register callbacks for Navigators push & pop
   void addBoostNavigatorObserver(NavigatorObserver observer) =>
       ContainerNavigatorObserver.boostObservers.add(observer);
-
-
 }

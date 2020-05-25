@@ -76,7 +76,6 @@ class ContainerManagerState extends State<BoostContainerManager> {
 
   bool get foreground => _foreground;
 
-
   //Number of containers.
   int get containerCounts => _offstage.length;
 
@@ -138,7 +137,8 @@ class ContainerManagerState extends State<BoostContainerManager> {
     properties['newName'] = now;
     properties['oldName'] = old;
 
-    FlutterBoost.singleton.channel.invokeMethod('onShownContainerChanged',properties);
+    FlutterBoost.singleton.channel
+        .invokeMethod<dynamic>('onShownContainerChanged', properties);
   }
 
   void _refreshOverlayEntries() {
@@ -183,9 +183,11 @@ class ContainerManagerState extends State<BoostContainerManager> {
     if (SchedulerBinding.instance.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
       SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
+        Logger.log('_refreshOverlayEntries in addPostFrameCallback');
         _refreshOverlayEntries();
       });
     } else {
+      Logger.log('_refreshOverlayEntries in setState');
       _refreshOverlayEntries();
     }
 
@@ -345,4 +347,3 @@ class _ContainerOverlayEntry extends OverlayEntry {
     super.remove();
   }
 }
-

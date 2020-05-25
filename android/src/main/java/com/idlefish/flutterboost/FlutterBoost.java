@@ -5,12 +5,16 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
+
 import android.support.annotation.NonNull;
+
 import com.idlefish.flutterboost.interfaces.*;
 import io.flutter.embedding.android.FlutterView;
 import io.flutter.embedding.engine.FlutterEngine;
+import io.flutter.embedding.engine.FlutterJNI;
 import io.flutter.embedding.engine.FlutterShellArgs;
 import io.flutter.embedding.engine.dart.DartExecutor;
+import io.flutter.embedding.engine.loader.FlutterLoader;
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.view.FlutterMain;
 
@@ -19,17 +23,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FlutterBoost {
-
     private Platform mPlatform;
 
     private FlutterViewContainerManager mManager;
     private FlutterEngine mEngine;
     private Activity mCurrentActiveActivity;
-    private PluginRegistry mRegistry;
+    private boolean mEnterActivityCreate =false;
     static FlutterBoost sInstance = null;
+    private static boolean sInit;
 
     private long FlutterPostFrameCallTime = 0;
     private Application.ActivityLifecycleCallbacks mActivityLifecycleCallbacks;
+    private PluginRegistry mRegistry;
 
     public long getFlutterPostFrameCallTime() {
         return FlutterPostFrameCallTime;
@@ -47,7 +52,10 @@ public class FlutterBoost {
     }
 
     public void init(Platform platform) {
-
+        if (sInit){
+            Debuger.log("FlutterBoost is alread inited. Do not init twice");
+            return;
+        }
 
         mPlatform = platform;
         mManager = new FlutterViewContainerManager();
@@ -56,24 +64,25 @@ public class FlutterBoost {
 
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+                //fix crash：'FlutterBoostPlugin not register yet'
+                //case: initFlutter after Activity.OnCreate method，and then called start/stop crash
+                // In SplashActivity ,showDialog(in OnCreate method) to check permission, if authorized, then init sdk and jump homePage)
+                mEnterActivityCreate = true;
                 mCurrentActiveActivity = activity;
                 if (mPlatform.whenEngineStart() == ConfigBuilder.ANY_ACTIVITY_CREATED) {
                     doInitialFlutter();
-                    boostPluginRegistry();
                 }
-                if (mPlatform.whenEngineStart() == ConfigBuilder.IMMEDIATELY) {
-                    boostPluginRegistry();
-
-                }
-
             }
 
             @Override
             public void onActivityStarted(Activity activity) {
+                if (!mEnterActivityCreate){
+                    return;
+                }
                 if (mCurrentActiveActivity == null) {
                     Debuger.log("Application entry foreground");
 
-                    if (createEngine() != null) {
+                    if (mEngine != null) {
                         HashMap<String, String> map = new HashMap<>();
                         map.put("type", "foreground");
                         channel().sendEvent("lifecycle", map);
@@ -84,20 +93,28 @@ public class FlutterBoost {
 
             @Override
             public void onActivityResumed(Activity activity) {
+                if (!mEnterActivityCreate){
+                    return;
+                }
                 mCurrentActiveActivity = activity;
             }
 
             @Override
             public void onActivityPaused(Activity activity) {
-
+                if (!mEnterActivityCreate){
+                    return;
+                }
             }
 
             @Override
             public void onActivityStopped(Activity activity) {
+                if (!mEnterActivityCreate){
+                    return;
+                }
                 if (mCurrentActiveActivity == activity) {
                     Debuger.log("Application entry background");
 
-                    if (createEngine() != null) {
+                    if (mEngine != null) {
                         HashMap<String, String> map = new HashMap<>();
                         map.put("type", "background");
                         channel().sendEvent("lifecycle", map);
@@ -108,15 +125,20 @@ public class FlutterBoost {
 
             @Override
             public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
+                if (!mEnterActivityCreate){
+                    return;
+                }
             }
 
             @Override
             public void onActivityDestroyed(Activity activity) {
+                if (!mEnterActivityCreate){
+                    return;
+                }
                 if (mCurrentActiveActivity == activity) {
                     Debuger.log("Application entry background");
 
-                    if (createEngine() != null) {
+                    if (mEngine != null) {
                         HashMap<String, String> map = new HashMap<>();
                         map.put("type", "background");
                         channel().sendEvent("lifecycle", map);
@@ -132,15 +154,18 @@ public class FlutterBoost {
 
             doInitialFlutter();
         }
-
+        sInit = true;
 
     }
 
     public void doInitialFlutter() {
+        if (mEngine != null) {
+            return;
+        }
 
-
-        if (mEngine != null) return;
-
+        if (mPlatform.lifecycleListener != null) {
+            mPlatform.lifecycleListener.beforeCreateEngine();
+        }
         FlutterEngine flutterEngine = createEngine();
         if (mPlatform.lifecycleListener != null) {
             mPlatform.lifecycleListener.onEngineCreated();
@@ -158,17 +183,8 @@ public class FlutterBoost {
         );
 
         flutterEngine.getDartExecutor().executeDartEntrypoint(entrypoint);
-        mRegistry = new BoostPluginRegistry(createEngine());
-
     }
 
-    public void boostPluginRegistry(){
-        if(mRegistry!=null&& !mRegistry.hasPlugin("boostPluginRegistry")){
-            mPlatform.registerPlugins(mRegistry);
-            mRegistry.registrarFor("boostPluginRegistry");
-        }
-
-    }
 
     public static class ConfigBuilder {
 
@@ -299,23 +315,32 @@ public class FlutterBoost {
         return mManager.findContainerById(id);
     }
 
-    public PluginRegistry getPluginRegistry() {
-        return mRegistry;
-    }
 
     private FlutterEngine createEngine() {
         if (mEngine == null) {
-
             FlutterMain.startInitialization(mPlatform.getApplication());
 
             FlutterShellArgs flutterShellArgs = new FlutterShellArgs(new String[0]);
             FlutterMain.ensureInitializationComplete(
                     mPlatform.getApplication().getApplicationContext(), flutterShellArgs.toArray());
 
-            mEngine = new FlutterEngine(mPlatform.getApplication().getApplicationContext());
+            mEngine = new FlutterEngine(mPlatform.getApplication().getApplicationContext(),FlutterLoader.getInstance(),new FlutterJNI(),null,false);
+//            registerPlugins(mEngine);
+            mRegistry = new BoostPluginRegistry(createEngine());
+            mPlatform.registerPlugins(mRegistry);
         }
         return mEngine;
 
+    }
+
+    private void registerPlugins(FlutterEngine engine) {
+        try {
+            Class<?> generatedPluginRegistrant = Class.forName("io.flutter.plugins.GeneratedPluginRegistrant");
+            Method registrationMethod = generatedPluginRegistrant.getDeclaredMethod("registerWith", FlutterEngine.class);
+            registrationMethod.invoke(null, engine);
+        } catch (Exception e) {
+            Debuger.exception(e);
+        }
     }
 
     public FlutterEngine engineProvider() {
@@ -331,12 +356,14 @@ public class FlutterBoost {
             mPlatform.lifecycleListener.onEngineDestroy();
         }
         mEngine = null;
-        mRegistry = null;
         mCurrentActiveActivity = null;
     }
 
 
     public interface BoostLifecycleListener {
+
+        void beforeCreateEngine();
+
         void onEngineCreated();
 
         void onPluginsRegistered();
@@ -344,10 +371,5 @@ public class FlutterBoost {
         void onEngineDestroy();
     }
 
-
-    public interface BoostPluginsRegister {
-
-        void registerPlugins(PluginRegistry mRegistry);
-    }
 
 }

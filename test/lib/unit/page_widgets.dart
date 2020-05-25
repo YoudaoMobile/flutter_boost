@@ -1,47 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boost/flutter_boost.dart';
-import 'package:flutter_boost_example/platform_view.dart';
 
-class FirstRouteWidget extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return new _FirstRouteWidgetState();
-  }
-}
-class _FirstRouteWidgetState extends State<FirstRouteWidget>{
-  _FirstRouteWidgetState();
-
-  @override
-  void initState() {
-    print('initState');
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    print('didChangeDependencies');
-    super.didChangeDependencies();
-  }
-
-  @override
-  void didUpdateWidget(FirstRouteWidget oldWidget) {
-    print('didUpdateWidget');
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void deactivate() {
-    print('deactivate');
-    super.deactivate();
-  }
-
-  @override
-  void dispose() {
-    print('[XDEBUG] - FirstRouteWidget is disposing~');
-    super.dispose();
-  }
-
+class FirstRouteWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,30 +16,10 @@ class _FirstRouteWidgetState extends State<FirstRouteWidget>{
           children: 
           <Widget>[
             RaisedButton(
-                child: Text('Open native page'),
-                onPressed: () {
-                  print("open natve page!");
-                  FlutterBoost.singleton.open("native").then((Map<dynamic,dynamic> value) {
-                    print(
-                        "call me when page is finished. did recieve native route result $value");
-                  });
-                },
-              ),
-              RaisedButton(
-                child: Text('Open FF route'),
-                onPressed: () {
-                  print("open FF page!");
-                  FlutterBoost.singleton.open("firstFirst").then((Map value) {
-                    print(
-                        "call me when page is finished. did recieve FF route result $value");
-                  });
-                },
-              ),
-              RaisedButton(
-                child: Text('Open second route1'),
+                child: Text('First'),
                 onPressed: () {
                   print("open second page!");
-                  FlutterBoost.singleton.open("second").then((Map<dynamic,dynamic> value) {
+                  FlutterBoost.singleton.open("second").then((Map value) {
                     print(
                         "call me when page is finished. did recieve second route result $value");
                   });
@@ -86,20 +27,10 @@ class _FirstRouteWidgetState extends State<FirstRouteWidget>{
               ),
 
               RaisedButton(
-                  child: Text('Present second stateful route'),
-                  onPressed: () {
-                    print("Present second stateful page!");
-                    FlutterBoost.singleton.open("secondStateful",urlParams:<String,dynamic>{"present":true}).then((Map value) {
-                      print(
-                          "call me when page is finished. did recieve second stateful route result $value");
-                    });
-                  },
-                ),
-                RaisedButton(
                   child: Text('Present second route'),
                   onPressed: () {
                     print("Present second page!");
-                    FlutterBoost.singleton.open("second",urlParams:<String,dynamic>{"present":true}).then((Map<dynamic,dynamic> value) {
+                    FlutterBoost.singleton.open("second",urlParams:<dynamic,dynamic>{"present":true}).then((Map value) {
                       print(
                           "call me when page is finished. did recieve second route result $value");
                     });
@@ -111,90 +42,17 @@ class _FirstRouteWidgetState extends State<FirstRouteWidget>{
     );
   }
 }
-class FirstFirstRouteWidget extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return new _FirstFirstRouteWidgetState();
-  }
-}
 
-class _FirstFirstRouteWidgetState extends State<FirstFirstRouteWidget>{
-  _FirstFirstRouteWidgetState();
-
-  @override
-  void initState() {
-    print('initState');
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    print('didChangeDependencies');
-    super.didChangeDependencies();
-  }
-
-  @override
-  void didUpdateWidget(FirstFirstRouteWidget oldWidget) {
-    print('didUpdateWidget');
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void deactivate() {
-    print('deactivate');
-    super.deactivate();
-  }
-
-  @override
-  void dispose() {
-    print('[XDEBUG] - FirstFirstRouteWidget is disposing~');
-    super.dispose();
-  }
-
+class EmbededFirstRouteWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('First Route'),
-      ),
       body: Center(
         child: RaisedButton(
-          child: Text('Open first route'),
-          onPressed: () {
-
-            print("open first page again!");
-            FlutterBoost.singleton.open("first").then((Map value){
-              print("did recieve first route result");
-              print("did recieve first route result $value");
-            });
-
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class EmbededFirstRouteWidget extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return _EmbededFirstRouteWidgetState();
-  }
-
-}
-
-class _EmbededFirstRouteWidgetState extends State<EmbededFirstRouteWidget> {
-  @override
-  Widget build(BuildContext context) {
-    print('_EmbededFirstRouteWidgetState build called!');
-    return Scaffold(
-      body: Center(
-        child: RaisedButton(
-          child: Text('Open second route2'),
+          child: Text('Open second route'),
           onPressed: () {
             print("open second page!");
-            FlutterBoost.singleton.open("second").then((Map<dynamic,dynamic> value) {
+            FlutterBoost.singleton.open("second").then((Map value) {
               print(
                   "call me when page is finished. did recieve second route result $value");
             });
@@ -203,48 +61,6 @@ class _EmbededFirstRouteWidgetState extends State<EmbededFirstRouteWidget> {
       ),
     );
   }
-  @override
-  void dispose() {
-    print('[XDEBUG]:_EmbededFirstRouteWidgetState disposing~');
-    super.dispose();
-  }
-}
-
-class SecondStatefulRouteWidget extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return _SecondStatefulRouteWidgetState();
-  }
-}
-class _SecondStatefulRouteWidgetState extends State<SecondStatefulRouteWidget>{
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("SecondStateful Route"),
-      ),
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            // Navigate back to first route when tapped.
-
-            BoostContainerSettings settings =
-                BoostContainer.of(context).settings;
-            FlutterBoost.singleton.close(settings.uniqueId,
-                result: <String,dynamic>{"result": "data from second"});
-          },
-          child: Text('Go back with result!'),
-        ),
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    print('[XDEBUG]:SecondStatefulRouteWidget disposing~');
-    super.dispose();
-  }
 }
 
 class SecondRouteWidget extends StatelessWidget {
@@ -252,7 +68,7 @@ class SecondRouteWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Second Route"),
+        title: Text("Second"),
       ),
       body: Center(
         child: RaisedButton(
@@ -262,7 +78,7 @@ class SecondRouteWidget extends StatelessWidget {
             BoostContainerSettings settings =
                 BoostContainer.of(context).settings;
             FlutterBoost.singleton.close(settings.uniqueId,
-                result: <String,dynamic>{"result": "data from second"});
+                result:<dynamic,dynamic>{"result": "data from second"});
           },
           child: Text('Go back with result!'),
         ),
@@ -283,35 +99,13 @@ class TabRouteWidget extends StatelessWidget {
           onPressed: () {
             FlutterBoost.singleton.open("second");
           },
-          child: Text('Open second route3'),
+          child: Text('Open second route'),
         ),
       ),
     );
   }
 }
 
-class PlatformRouteWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title:Text("Platform Route"),
-      ),
-      body: Center(
-        child: RaisedButton(
-          child: TextView(),
-          onPressed: () {
-            print("open second page!");
-            FlutterBoost.singleton.open("second").then((Map<dynamic,dynamic> value) {
-              print(
-                  "call me when page is finished. did recieve second route result $value");
-            });
-          },
-        ),
-      ),
-    );
-  }
-}
 class FlutterRouteWidget extends StatefulWidget {
   FlutterRouteWidget({this.params,this.message});
   final Map params;
@@ -378,7 +172,7 @@ class _FlutterRouteWidgetState extends State<FlutterRouteWidget> {
                   ///后面的参数会在native的IPlatform.startActivity方法回调中拼接到url的query部分。
                   ///例如：sample://nativePage?aaa=bbb
                   onTap: () => FlutterBoost.singleton
-                      .open("sample://nativePage", urlParams: <String,dynamic>{
+                      .open("sample://nativePage", urlParams: <dynamic,dynamic>{
                     "query": {"aaa": "bbb"}
                   }),
                 ),
@@ -395,7 +189,7 @@ class _FlutterRouteWidgetState extends State<FlutterRouteWidget> {
                   ///后面的参数会在native的IPlatform.startActivity方法回调中拼接到url的query部分。
                   ///例如：sample://nativePage?aaa=bbb
                   onTap: () => FlutterBoost.singleton
-                      .open("first", urlParams: <String,dynamic>{
+                      .open("first", urlParams: <dynamic,dynamic>{
                     "query": {"aaa": "bbb"}
                   }),
                 ),
@@ -412,7 +206,7 @@ class _FlutterRouteWidgetState extends State<FlutterRouteWidget> {
                   ///后面的参数会在native的IPlatform.startActivity方法回调中拼接到url的query部分。
                   ///例如：sample://nativePage?aaa=bbb
                   onTap: () => FlutterBoost.singleton
-                      .open("second", urlParams:<String,dynamic> {
+                      .open("second", urlParams: <dynamic,dynamic>{
                     "query": {"aaa": "bbb"}
                   }),
                 ),
@@ -429,7 +223,7 @@ class _FlutterRouteWidgetState extends State<FlutterRouteWidget> {
                   ///后面的参数会在native的IPlatform.startActivity方法回调中拼接到url的query部分。
                   ///例如：sample://nativePage?aaa=bbb
                   onTap: () => FlutterBoost.singleton
-                      .open("tab", urlParams:<String,dynamic> {
+                      .open("tab", urlParams: <dynamic,dynamic>{
                     "query": {"aaa": "bbb"}
                   }),
                 ),
@@ -446,7 +240,7 @@ class _FlutterRouteWidgetState extends State<FlutterRouteWidget> {
                   ///后面的参数会在native的IPlatform.startActivity方法回调中拼接到url的query部分。
                   ///例如：sample://nativePage?aaa=bbb
                   onTap: () => FlutterBoost.singleton
-                      .open("sample://flutterPage", urlParams:<String,dynamic> {
+                      .open("sample://flutterPage", urlParams:<dynamic,dynamic> {
                     "query": {"aaa": "bbb"}
                   }),
                 ),
@@ -460,7 +254,7 @@ class _FlutterRouteWidgetState extends State<FlutterRouteWidget> {
                         style: TextStyle(fontSize: 22.0, color: Colors.black),
                       )),
                   onTap: () {
-                  Navigator.push<dynamic>(context,
+                    Navigator.push<dynamic>(context,
                         MaterialPageRoute<dynamic>(builder: (_) => PushWidget()));
                   },
                 ),
@@ -475,8 +269,6 @@ class _FlutterRouteWidgetState extends State<FlutterRouteWidget> {
                       style: TextStyle(fontSize: 22.0, color: Colors.black),
                     )),
                 onTap: () {
-                  Navigator.push<dynamic>(context,
-                      MaterialPageRoute<dynamic>(builder: (_) => PlatformRouteWidget()));
                 },
               ),
                 InkWell(
@@ -604,7 +396,6 @@ class _PushWidgetState extends State<PushWidget> {
   @override
   void dispose() {
     // TODO: implement dispose
-    print('[XDEBUG] - PushWidget is disposing~');
     super.dispose();
     _backPressedListenerUnsub?.call();
   }
