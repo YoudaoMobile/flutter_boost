@@ -30,7 +30,6 @@
 
 @interface FLBFlutterEngine()
 @property (nonatomic,strong) FlutterEngine *engine;
-@property (nonatomic,strong)  FLBFlutterViewContainer *dummy;
 @end
 
 @implementation FLBFlutterEngine
@@ -53,18 +52,6 @@
         }else{
             [_engine runWithEntrypoint:nil];
         }
-        _dummy = [[FLBFlutterViewContainer alloc] initWithEngine:_engine
-                                                          nibName:nil
-                                                           bundle:nil];
-        _dummy.name = kIgnoreMessageWithName;
-        
-        Class clazz = NSClassFromString(@"GeneratedPluginRegistrant");
-        if (clazz) {
-            if ([clazz respondsToSelector:NSSelectorFromString(@"registerWithRegistry:")]) {
-                [clazz performSelector:NSSelectorFromString(@"registerWithRegistry:")
-                            withObject:_engine];
-            }
-        }
     }
     
     return self;
@@ -84,7 +71,9 @@
 
 - (void)resume
 {
-    [[_engine lifecycleChannel] sendMessage:@"AppLifecycleState.resumed"];
+    if([UIApplication sharedApplication].applicationState == UIApplicationStateActive){
+        [[_engine lifecycleChannel] sendMessage:@"AppLifecycleState.resumed"];
+    }
 }
 
 - (void)inactive
@@ -105,25 +94,27 @@
                          arguments:@{@"type":@"foreground"}];
 }
 
-- (void)atacheToViewController:(FlutterViewController *)vc
+- (BOOL)atacheToViewController:(FlutterViewController *)vc
 {
     if(_engine.viewController != vc){
-        [(FLBFlutterViewContainer *)_engine.viewController surfaceUpdated:NO];
         _engine.viewController = vc;
+        return YES;
     }
+    return NO;
 }
 
 - (void)detach
 {
-    if(_engine.viewController != _dummy){
-        _engine.viewController = _dummy;
+    if(_engine.viewController != nil){
+        [(FLBFlutterViewContainer *)_engine.viewController surfaceUpdated:NO];
+        _engine.viewController = nil;
     }
 }
 
 - (void)prepareEngineIfNeeded
 {
-    [(FLBFlutterViewContainer *)_engine.viewController surfaceUpdated:NO];
-    NSLog(@"[XDEBUG]---surface changed--reset-");
+//    [(FLBFlutterViewContainer *)_engine.viewController surfaceUpdated:NO];
+//    NSLog(@"[XDEBUG]---surface changed--reset-");
 //    [self detach];
 }
 

@@ -5,7 +5,7 @@
 
 # Release Note
 
- 请查看最新版本0.1.64的release note 确认变更，[0.1.64 release note](https://github.com/alibaba/flutter_boost/releases)。
+ 请查看最新版本1.12.13+1的release note 确认变更，[1.12.13+1 release note](https://github.com/alibaba/flutter_boost/releases)。
 
 # FlutterBoost
 
@@ -14,34 +14,30 @@
 
 # 前置条件
 
-在继续之前，您需要将Flutter集成到你现有的项目中。flutter sdk 的版本需要 v1.9.1-hotfixes，否则会编译失败.
+在继续之前，您需要将Flutter集成到你现有的项目中。flutter sdk 的版本需要和boost版本适配，否则会编译失败.
 
 # FAQ
 请阅读这篇文章:
 <a href="Frequently Asked Question.md">FAQ</a>
 
-
 # boost 版本说明
 
-1. 0.1.50 是基于flutter v1.5.4-hotfixes 分支，android 如果其他flutter版本或者分支 会编译错误
-
-2. 0.1.51--0.1.54 是对0.1.50的bugfix
-
-
-3. 0.1.60 是基于flutter v1.9.1-hotfixes 分支，android如果其他flutter分支会编译错误,该版本不支持andriodx
-
-4. 0.1.61-- 0.1.64 是对0.1.60 的bugfix
+| Flutter Boost 版本 | 支持的 Flutter SDK 版本 | Description                                                  | 是否支持 AndroidX？ |
+| ----------------------- | ----------------------- | ------------------------------------------------------------ | ------------------- |
+| 1.9.1+2              | 1.9.1-hotfixes              | 版本号重新命名，开始默认支持androidx  | Yes                 |
+| 1.12.13+1               | 1.12.13 -hotfixes              | 支持androidx  | Yes                 |
+| 1.12.13+2              | 1.17.1-hotfixes              | 支持androidx  | Yes                 |
+| 1.12.13+3              | 1.17.1-hotfixes              | 支持androidx  | Yes                 |
 
 
-5. 关于androidx 的支持声明
-
- 目前androidx 分支为 v0.1.61-androidx-hotfixes
-
- 是基于flutter v1.9.1-hotfixes 分支，如果其他分支会编译错误
-
- 和0.1.60代码同步， bugfix 也会合入该分支。
 
 
+
+| Flutter Boost 分支 | 支持的 Flutter SDK 版本 | Description                                                  | 是否支持 AndroidX？ |
+| --------------------- | --------------------------- | ------------------------------------------------------------ | ------------------ |
+| v1.9.1-hotfixes         | 1.9.1-hotfixes          | for androidx  | Yes                 |
+| v1.12.13-hotfixes       | 1.12.13-hotfixes         | for androidx                                                        | Yes                 |
+| v1.17.1-hotfixes       | 1.17.1        | for androidx                                                        | Yes                 |
 
 
 # 安装
@@ -50,22 +46,12 @@
 
 打开pubspec.yaml并将以下行添加到依赖项：
 
-support分支
-```json
-
-flutter_boost:
-    git:
-        url: 'https://github.com/alibaba/flutter_boost.git'
-        ref: '0.1.64'
-
-```
-
-androidx分支
+androidx branch
 ```json
 flutter_boost:
     git:
         url: 'https://github.com/alibaba/flutter_boost.git'
-        ref: 'v0.1.61-androidx-hotfixes'
+        ref: '1.12.13+2'
 ```
 
 

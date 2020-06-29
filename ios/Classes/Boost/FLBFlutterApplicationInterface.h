@@ -36,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)startFlutterWithPlatform:(id<FLBPlatform>)platform
                       withEngine:(FlutterEngine* _Nullable)engine
+                        withPluginRegisterred:(BOOL)registerPlugin
                          onStart:(void (^)(FlutterEngine *engine))callback;
 
 - (FlutterViewController *)flutterViewController;
@@ -65,6 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
        onPageFinished:(void (^)(NSDictionary *))resultCallback
   completion:(void (^)(BOOL))completion;
 
+- (void)attachToPreviousContainer;
 
 - (void)didInitPageContainer:(NSString *)url
                       params:(NSDictionary *)urlParams
@@ -73,6 +75,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)willDeallocPageContainer:(NSString *)url
                           params:(NSDictionary *)params
                         uniqueId:(NSString *)uniqueId;
+
+- (void)onShownContainerChanged:(NSString *)uniqueId
+                         params:(NSDictionary *)params;
 
 @end
 NS_ASSUME_NONNULL_END
