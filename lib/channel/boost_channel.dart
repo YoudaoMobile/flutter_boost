@@ -44,6 +44,7 @@ class BoostChannel {
         if (list != null) {
           for (final EventListener l in list) {
             l(name, arg);
+            debugPrint("flutter_boost" + name.toString);
           }
         }
       } else {

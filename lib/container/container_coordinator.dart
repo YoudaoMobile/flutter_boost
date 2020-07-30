@@ -77,7 +77,7 @@ class ContainerCoordinator {
 
           assert(page != null);
           Logger.log('build widget:$page for page:$name($pageId)');
-
+          debugPrint('build widget:$page for page:$name($pageId)');
           return page;
         });
 
@@ -147,7 +147,7 @@ class ContainerCoordinator {
         (call.arguments['params'] as Map<dynamic, dynamic>)
             ?.cast<String, dynamic>();
     final String uniqueId = call.arguments['uniqueId'] as String;
-
+    debugPrint("flutter_boost"+ call.method);
     switch (call.method) {
       case 'didInitPageContainer':
         _nativeContainerDidInit(pageName, params, uniqueId);
