@@ -168,7 +168,7 @@ class ContainerCoordinator {
           break;
         case 'onNativePageResult':
           break;
-      }
+      });
     }
     return Future<dynamic>(() {});
   }
