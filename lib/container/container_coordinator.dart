@@ -77,7 +77,6 @@ class ContainerCoordinator {
 
           assert(page != null);
           Logger.log('build widget:$page for page:$name($pageId)');
-          debugPrint('build widget:$page for page:$name($pageId)');
           return page;
         });
 
@@ -147,30 +146,30 @@ class ContainerCoordinator {
         (call.arguments['params'] as Map<dynamic, dynamic>)
             ?.cast<String, dynamic>();
     final String uniqueId = call.arguments['uniqueId'] as String;
-    debugPrint("flutter_boost"+ call.method);
-    switch (call.method) {
-      case 'didInitPageContainer':
-        _nativeContainerDidInit(pageName, params, uniqueId);
-        break;
-      case 'willShowPageContainer':
-        _nativeContainerWillShow(pageName, params, uniqueId);
-        break;
-      case 'didShowPageContainer':
-        nativeContainerDidShow(pageName, params, uniqueId);
-        break;
-      case 'willDisappearPageContainer':
-        _nativeContainerWillDisappear(pageName, params, uniqueId);
-        break;
-      case 'didDisappearPageContainer':
-        _nativeContainerDidDisappear(pageName, params, uniqueId);
-        break;
-      case 'willDeallocPageContainer':
-        _nativeContainerWillDealloc(pageName, params, uniqueId);
-        break;
-      case 'onNativePageResult':
-        break;
+    WidgetsBinding.instance.addPostFrameCallback((d) {
+      switch (call.method) {
+        case 'didInitPageContainer':
+          _nativeContainerDidInit(pageName, params, uniqueId);
+          break;
+        case 'willShowPageContainer':
+          _nativeContainerWillShow(pageName, params, uniqueId);
+          break;
+        case 'didShowPageContainer':
+          nativeContainerDidShow(pageName, params, uniqueId);
+          break;
+        case 'willDisappearPageContainer':
+          _nativeContainerWillDisappear(pageName, params, uniqueId);
+          break;
+        case 'didDisappearPageContainer':
+          _nativeContainerDidDisappear(pageName, params, uniqueId);
+          break;
+        case 'willDeallocPageContainer':
+          _nativeContainerWillDealloc(pageName, params, uniqueId);
+          break;
+        case 'onNativePageResult':
+          break;
+      }
     }
-
     return Future<dynamic>(() {});
   }
 
